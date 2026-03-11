@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Granite Billing Calculator</title>
+<style>
+body{
+font-family: Arial;
+padding:20px;
+background:#f4f4f4;
+}
+input{
+padding:8px;
+margin:5px;
+width:120px;
+}
+button{
+padding:10px;
+background:#333;
+color:white;
+border:none;
+}
+.result{
+margin-top:20px;
+font-size:18px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Granite Bill Calculator</h2>
+
+<h3>SFT Calculation</h3>
+SFT: <input id="sft"><br>
+Rate: <input id="rate"><br>
+
+<h3>Extra Charges</h3>
+Mining: <input id="mining"><br>
+Loading: <input id="loading"><br>
+
+<h3>RTGS Amount</h3>
+RTGS: <input id="rtgs"><br><br>
+
+<button onclick="calculate()">Calculate</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function calculate(){
+
+let sft = Number(document.getElementById("sft").value);
+let rate = Number(document.getElementById("rate").value);
+let mining = Number(document.getElementById("mining").value);
+let loading = Number(document.getElementById("loading").value);
+let rtgs = Number(document.getElementById("rtgs").value);
+
+let material = sft * rate;
+let gst = material * 0.18;
+
+let total = material + gst + mining + loading;
+
+let axis = total - rtgs;
+
+document.getElementById("result").innerHTML = `
+Material = ${material}<br>
+GST = ${gst}<br>
+Total = ${total}<br>
+Axis Amount = ${axis}
+`;
+}
+</script>
+
+</body>
+</html>
