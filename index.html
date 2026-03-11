@@ -1,116 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Granite Bill Calculator</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f4f4f4;
-padding:20px;
-}
-
-.container{
-background:white;
-padding:20px;
-max-width:500px;
-margin:auto;
-border-radius:8px;
-box-shadow:0 0 10px rgba(0,0,0,0.2);
-}
-
-h2{
-text-align:center;
-}
-
-label{
-font-weight:bold;
-}
-
-input{
-width:100%;
-padding:10px;
-margin:6px 0 12px 0;
-font-size:16px;
-}
-
-button{
-width:100%;
-padding:12px;
-font-size:18px;
-border:none;
-background:#007bff;
-color:white;
-margin-top:8px;
-cursor:pointer;
-}
-
-.result{
-margin-top:20px;
-font-size:18px;
-background:#fafafa;
-padding:10px;
-border-radius:5px;
-}
-
-.highlight{
-background:yellow;
-font-weight:bold;
-padding:3px;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<h2>Granite Bill Calculator</h2>
-
-<label>Customer Name</label>
-<input id="customer">
-
-<label>SFT</label>
-<input id="sft" type="number">
-
-<label>Rate</label>
-<input id="rate" type="number">
-
-<label>Mining Quantity</label>
-<input id="miningQty" type="number">
-
-<label>Loading Amount</label>
-<input id="loading" type="number">
-
-<label>RTGS Amount</label>
-<input id="rtgs" type="number">
-
-<button onclick="calculate()">Calculate</button>
-<button onclick="downloadImage()">Download Image</button>
-
-<div class="result" id="result"></div>
-
-</div>
-
-<script>
-
 function calculate(){
 
 let customer = document.getElementById("customer").value;
+
 let sft = Number(document.getElementById("sft").value);
 let rate = Number(document.getElementById("rate").value);
+
+let sellingPrice = Number(document.getElementById("gst").value);
+
 let miningQty = Number(document.getElementById("miningQty").value);
 let loading = Number(document.getElementById("loading").value);
 let rtgs = Number(document.getElementById("rtgs").value);
 
 let material = sft * rate;
 
-let gst = material * 0.18;
+let gst = sellingPrice * 0.18;
 
 let mining = miningQty * 7;
 
@@ -122,7 +25,7 @@ document.getElementById("result").innerHTML = `
 Customer : <b>${customer}</b><br><br>
 
 Material = ${material.toLocaleString()}<br>
-GST (18%) = ${gst.toLocaleString()}<br>
+GST (18% of ${sellingPrice}) = ${gst.toLocaleString()}<br>
 Mining (${miningQty} × 7) = ${mining.toLocaleString()}<br>
 Loading = ${loading.toLocaleString()}<br><br>
 
@@ -133,21 +36,3 @@ Axis Amount = <span class="highlight">${axis.toLocaleString()}</span>
 `;
 
 }
-
-function downloadImage(){
-
-html2canvas(document.getElementById("result")).then(canvas => {
-
-let link = document.createElement("a");
-link.download = "granite_bill.png";
-link.href = canvas.toDataURL();
-link.click();
-
-});
-
-}
-
-</script>
-
-</body>
-             </html>
