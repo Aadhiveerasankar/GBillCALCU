@@ -1,53 +1,99 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Granite Billing Calculator</title>
+<title>Granite Bill Calculator</title>
+
 <style>
+
 body{
 font-family: Arial;
-padding:20px;
 background:#f4f4f4;
+padding:20px;
 }
+
+.container{
+background:white;
+padding:20px;
+max-width:500px;
+margin:auto;
+border-radius:8px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h2{
+text-align:center;
+}
+
 input{
-padding:8px;
-margin:5px;
-width:120px;
-}
-button{
+width:100%;
 padding:10px;
-background:#333;
+margin:8px 0;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#2c7be5;
 color:white;
 border:none;
+font-size:18px;
+cursor:pointer;
 }
+
 .result{
 margin-top:20px;
+background:#fafafa;
+padding:15px;
+border-radius:5px;
 font-size:18px;
-font-weight:bold;
 }
+
+.highlight{
+background:yellow;
+font-weight:bold;
+padding:5px;
+}
+
 </style>
+
 </head>
 
 <body>
 
+<div class="container">
+
 <h2>Granite Bill Calculator</h2>
 
-<h3>SFT Calculation</h3>
-SFT: <input id="sft"><br>
-Rate: <input id="rate"><br>
+<label>Customer Name</label>
+<input id="customer">
 
-<h3>Extra Charges</h3>
-Mining: <input id="mining"><br>
-Loading: <input id="loading"><br>
+<label>SFT</label>
+<input id="sft">
 
-<h3>RTGS Amount</h3>
-RTGS: <input id="rtgs"><br><br>
+<label>Rate</label>
+<input id="rate">
 
-<button onclick="calculate()">Calculate</button>
+<label>Mining</label>
+<input id="mining">
+
+<label>Loading</label>
+<input id="loading">
+
+<label>RTGS Amount</label>
+<input id="rtgs">
+
+<button onclick="calc()">Calculate</button>
 
 <div class="result" id="result"></div>
 
+</div>
+
 <script>
-function calculate(){
+
+function calc(){
+
+let customer = document.getElementById("customer").value;
 
 let sft = Number(document.getElementById("sft").value);
 let rate = Number(document.getElementById("rate").value);
@@ -57,19 +103,26 @@ let rtgs = Number(document.getElementById("rtgs").value);
 
 let material = sft * rate;
 let gst = material * 0.18;
-
 let total = material + gst + mining + loading;
-
 let axis = total - rtgs;
 
 document.getElementById("result").innerHTML = `
-Material = ${material}<br>
-GST = ${gst}<br>
-Total = ${total}<br>
-Axis Amount = ${axis}
+
+Customer : <b>${customer}</b><br><br>
+
+Material = ${material.toLocaleString()}<br>
+GST (18%) = ${gst.toLocaleString()}<br>
+Total = ${total.toLocaleString()}<br><br>
+
+RTGS = ${rtgs.toLocaleString()}<br><br>
+
+Axis Amount = <span class="highlight">${axis.toLocaleString()}</span>
+
 `;
+
 }
+
 </script>
 
 </body>
-</html>
+  </html>
