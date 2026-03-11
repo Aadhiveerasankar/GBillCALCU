@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Granite Bill Calculator</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 
 body{
-font-family: Arial;
+font-family:Arial;
 background:#f4f4f4;
 padding:20px;
 }
@@ -24,66 +27,74 @@ h2{
 text-align:center;
 }
 
+label{
+font-weight:bold;
+}
+
 input{
 width:100%;
 padding:10px;
-margin:8px 0;
+margin:6px 0 12px 0;
 font-size:16px;
 }
 
 button{
 width:100%;
 padding:12px;
-background:#2c7be5;
-color:white;
-border:none;
 font-size:18px;
+border:none;
+background:#007bff;
+color:white;
+margin-top:8px;
 cursor:pointer;
 }
 
 .result{
 margin-top:20px;
-background:#fafafa;
-padding:15px;
-border-radius:5px;
 font-size:18px;
+background:#fafafa;
+padding:10px;
+border-radius:5px;
 }
 
 .highlight{
 background:yellow;
 font-weight:bold;
-padding:5px;
+padding:3px;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<h2>Granite Bill Calculator</h2>
+<h2>Granite Billing Calculator</h2>
 
 <label>Customer Name</label>
 <input id="customer">
 
 <label>SFT</label>
-<input id="sft">
+<input id="sft" type="number">
 
 <label>Rate</label>
-<input id="rate">
+<input id="rate" type="number">
 
-<label>Mining</label>
-<input id="mining">
+<label>GST %</label>
+<input id="gst" type="number">
 
-<label>Loading</label>
-<input id="loading">
+<label>Mining Quantity</label>
+<input id="miningQty" type="number">
+
+<label>Loading Amount</label>
+<input id="loading" type="number">
 
 <label>RTGS Amount</label>
-<input id="rtgs">
+<input id="rtgs" type="number">
 
-<button onclick="calc()">Calculate</button>
+<button onclick="calculate()">Calculate</button>
+<button onclick="downloadPDF()">Download PDF</button>
 
 <div class="result" id="result"></div>
 
@@ -91,38 +102,91 @@ padding:5px;
 
 <script>
 
-function calc(){
+let bill = {};
+
+function calculate(){
 
 let customer = document.getElementById("customer").value;
-
 let sft = Number(document.getElementById("sft").value);
 let rate = Number(document.getElementById("rate").value);
-let mining = Number(document.getElementById("mining").value);
+let gstPercent = Number(document.getElementById("gst").value);
+let miningQty = Number(document.getElementById("miningQty").value);
 let loading = Number(document.getElementById("loading").value);
 let rtgs = Number(document.getElementById("rtgs").value);
 
 let material = sft * rate;
-let gst = material * 0.18;
+let gst = material * gstPercent / 100;
+let mining = miningQty * 7;
+
 let total = material + gst + mining + loading;
 let axis = total - rtgs;
 
-document.getElementById("result").innerHTML = `
+bill = {
+customer,
+sft,
+rate,
+material,
+gstPercent,
+gst,
+miningQty,
+mining,
+loading,
+total,
+rtgs,
+axis
+};
 
+document.getElementById("result").innerHTML = `
 Customer : <b>${customer}</b><br><br>
 
 Material = ${material.toLocaleString()}<br>
-GST (18%) = ${gst.toLocaleString()}<br>
-Total = ${total.toLocaleString()}<br><br>
+GST (${gstPercent}%) = ${gst.toLocaleString()}<br>
+Mining (${miningQty} × 7) = ${mining.toLocaleString()}<br>
+Loading = ${loading.toLocaleString()}<br><br>
 
+Total = ${total.toLocaleString()}<br>
 RTGS = ${rtgs.toLocaleString()}<br><br>
 
 Axis Amount = <span class="highlight">${axis.toLocaleString()}</span>
-
 `;
+
+}
+
+function downloadPDF(){
+
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+
+doc.setFont("courier");
+
+doc.setFontSize(16);
+doc.text("Granite Calculation",20,20);
+
+doc.setFontSize(12);
+
+doc.text("Customer : " + bill.customer,20,40);
+
+doc.text("SFT x Rate",20,55);
+doc.text(bill.sft + " x " + bill.rate + " = " + bill.material,20,65);
+
+doc.text("GST ("+bill.gstPercent+"%) = " + bill.gst,20,80);
+
+doc.text("Mining ("+bill.miningQty+" x 7) = " + bill.mining,20,95);
+
+doc.text("Loading = " + bill.loading,20,110);
+
+doc.text("Total = " + bill.total,20,125);
+
+doc.text("RTGS = " + bill.rtgs,20,140);
+
+doc.setFontSize(14);
+doc.text("Axis Amount = " + bill.axis,20,160);
+
+doc.save("granite_bill.pdf");
 
 }
 
 </script>
 
 </body>
-  </html>
+</html>
