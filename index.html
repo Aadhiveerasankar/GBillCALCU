@@ -14,7 +14,7 @@
 
 body{
 background:#efefef;
-padding:20px;
+padding:15px;
 font-family:Arial;
 }
 
@@ -48,9 +48,9 @@ cursor:pointer;
 .bill{
 margin-top:25px;
 background:white;
-padding:60px;
+padding:30px 20px;
 font-family:'Kalam', cursive;
-font-size:38px;
+font-size:34px;
 line-height:1.8;
 position:relative;
 }
@@ -59,7 +59,7 @@ position:relative;
 display:flex;
 justify-content:space-between;
 position:relative;
-margin-bottom:50px;
+margin-bottom:40px;
 }
 
 .center-title{
@@ -76,7 +76,7 @@ margin:10px 0;
 
 .value{
 text-align:right;
-min-width:260px;
+min-width:220px;
 }
 
 .line{
@@ -91,12 +91,12 @@ text-align:center;
 
 .highlight{
 background:yellow;
-padding:8px;
+padding:10px;
 text-align:center;
 }
 
 .final{
-font-size:46px;
+font-size:44px;
 font-weight:bold;
 text-align:center;
 border-top:3px solid black;
@@ -173,13 +173,15 @@ let rtgs=Number(document.getElementById("rtgs").value)||0;
 let pending=Number(document.getElementById("pending").value)||0;
 
 let material=sft*rate;
-let gst=gstBase*0.18;
+
+let gst=Math.round(gstBase*0.18);
+
 let mining=miningQty*7;
 
-let total=material+gst+mining+loading;
+let total=Math.round(material+gst+mining+loading);
+
 let balance=total-rtgs;
 
-/* rounding fix */
 let finalAmount=Math.round(balance+pending);
 
 document.getElementById("bill").innerHTML = `
@@ -188,7 +190,7 @@ document.getElementById("bill").innerHTML = `
 
 <div><u>Bill</u></div>
 
-<div class="center-title"><u>శ్రీరామ</u></div>
+<div class="center-title"><u>శ్రీరామ Seven</u></div>
 
 <div>${customer}</div>
 
@@ -211,7 +213,7 @@ document.getElementById("bill").innerHTML = `
 <br>
 
 <div class="row">
-<div>SFT = ${sft} × ${rate}</div>
+<div>SFT = ${sft}</div>
 <div class="value">= ${formatINR(material)} -</div>
 </div>
 
