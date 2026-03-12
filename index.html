@@ -131,21 +131,24 @@ text-align:center;
 <script>
 
 function formatINR(num){
-return num.toLocaleString('en-IN');
+return num.toLocaleString('en-IN',{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
 }
 
 function calculate(){
 
 let customer=document.getElementById("customer").value;
 
-let sft=Number(document.getElementById("sft").value);
-let rate=Number(document.getElementById("rate").value);
-let gstBase=Number(document.getElementById("gstBase").value);
+let sft=Number(document.getElementById("sft").value) || 0;
+let rate=Number(document.getElementById("rate").value) || 0;
+let gstBase=Number(document.getElementById("gstBase").value) || 0;
 
-let miningQty=Number(document.getElementById("mining").value);
-let loading=Number(document.getElementById("loading").value);
-let rtgs=Number(document.getElementById("rtgs").value);
-let pending=Number(document.getElementById("pending").value);
+let miningQty=Number(document.getElementById("mining").value) || 0;
+let loading=Number(document.getElementById("loading").value) || 0;
+let rtgs=Number(document.getElementById("rtgs").value) || 0;
+let pending=Number(document.getElementById("pending").value) || 0;
 
 let material=sft*rate;
 let gst=gstBase*0.18;
@@ -171,12 +174,12 @@ document.getElementById("bill").innerHTML = `
 
 <div class="row">
 <div>18%</div>
-<div>= ${formatINR(Math.round(gst))}</div>
+<div>= ${formatINR(gst)}</div>
 </div>
 
 <div class="line"></div>
 
-<div class="center">${formatINR(Math.round(gstBase + gst))}</div>
+<div class="center">${formatINR(gstBase + gst)}</div>
 
 <br>
 
@@ -187,7 +190,7 @@ document.getElementById("bill").innerHTML = `
 
 <div class="row">
 <div>GST 18%</div>
-<div>= ${formatINR(Math.round(gst))}</div>
+<div>= ${formatINR(gst)}</div>
 </div>
 
 <div class="row">
@@ -202,15 +205,15 @@ document.getElementById("bill").innerHTML = `
 
 <div class="line"></div>
 
-<div class="center">${formatINR(Math.round(total))}</div>
+<div class="center">${formatINR(total)}</div>
 
 <br>
 
-<div class="highlight center">RTGS  - ${formatINR(rtgs)}</div>
+<div class="highlight center">RTGS - ${formatINR(rtgs)}</div>
 
 <div class="line"></div>
 
-<div class="final">${formatINR(Math.round(balance + pending))}</div>
+<div class="final">${formatINR(finalAmount)}</div>
 
 `;
 
@@ -218,7 +221,9 @@ document.getElementById("bill").innerHTML = `
 
 function downloadBill(){
 
-html2canvas(document.getElementById("bill")).then(canvas=>{
+html2canvas(document.getElementById("bill"),{
+scale:3
+}).then(canvas=>{
 let link=document.createElement("a");
 link.download="granite_bill.png";
 link.href=canvas.toDataURL();
@@ -230,4 +235,4 @@ link.click();
 </script>
 
 </body>
-             </html>
+</html>
