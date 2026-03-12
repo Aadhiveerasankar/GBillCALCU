@@ -6,7 +6,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400&display=swap" rel="stylesheet">
 
 <style>
 
@@ -19,7 +19,7 @@ font-family:Arial;
 .container{
 background:white;
 padding:20px;
-max-width:600px;
+max-width:650px;
 margin:auto;
 border-radius:6px;
 }
@@ -45,50 +45,69 @@ cursor:pointer;
 .bill{
 margin-top:25px;
 background:white;
-padding:40px;
-font-family:'Patrick Hand', cursive;
-font-size:30px;
+padding:60px;
+font-family:'Kalam', cursive;
+font-size:38px;
 line-height:1.8;
+position:relative;
 }
 
 .header{
 display:flex;
 justify-content:space-between;
-font-size:38px;
+position:relative;
+margin-bottom:50px;
 }
 
-.title{
-text-decoration:underline;
-}
-
-.center{
-text-align:center;
+.center-title{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
 }
 
 .row{
 display:flex;
 justify-content:space-between;
-margin:6px 0;
+margin:10px 0;
+}
+
+.value{
+text-align:right;
+min-width:260px;
 }
 
 .line{
 border-bottom:3px solid black;
-margin:14px 0;
+margin:20px auto;
+width:60%;
+}
+
+.total{
+text-align:center;
 }
 
 .highlight{
 background:yellow;
-padding:5px 8px;
+padding:8px;
+text-align:center;
 }
 
 .final{
-font-size:44px;
+font-size:46px;
 font-weight:bold;
+text-align:center;
+border-top:3px solid black;
+border-bottom:3px solid black;
+display:inline-block;
+padding:6px 20px;
+margin-top:10px;
+}
+
+.center-block{
 text-align:center;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -141,14 +160,14 @@ function calculate(){
 
 let customer=document.getElementById("customer").value;
 
-let sft=Number(document.getElementById("sft").value) || 0;
-let rate=Number(document.getElementById("rate").value) || 0;
-let gstBase=Number(document.getElementById("gstBase").value) || 0;
+let sft=Number(document.getElementById("sft").value)||0;
+let rate=Number(document.getElementById("rate").value)||0;
+let gstBase=Number(document.getElementById("gstBase").value)||0;
 
-let miningQty=Number(document.getElementById("mining").value) || 0;
-let loading=Number(document.getElementById("loading").value) || 0;
-let rtgs=Number(document.getElementById("rtgs").value) || 0;
-let pending=Number(document.getElementById("pending").value) || 0;
+let miningQty=Number(document.getElementById("mining").value)||0;
+let loading=Number(document.getElementById("loading").value)||0;
+let rtgs=Number(document.getElementById("rtgs").value)||0;
+let pending=Number(document.getElementById("pending").value)||0;
 
 let material=sft*rate;
 let gst=gstBase*0.18;
@@ -161,59 +180,66 @@ let finalAmount=balance+pending;
 document.getElementById("bill").innerHTML = `
 
 <div class="header">
-<div class="title">Bill</div>
-<div class="title">శ్రీరామ</div>
-</div>
 
-<br>
+<div><u>Bill</u></div>
+
+<div class="center-title"><u>శ్రీరామ</u></div>
+
+<div>${customer}</div>
+
+</div>
 
 <div class="row">
 <div>${sft} × ${rate}</div>
-<div>= ${formatINR(material)}</div>
+<div class="value">= ${formatINR(material)} -</div>
 </div>
 
 <div class="row">
 <div>18%</div>
-<div>= ${formatINR(gst)}</div>
+<div class="value">= ${formatINR(gst)} -</div>
 </div>
 
 <div class="line"></div>
 
-<div class="center">${formatINR(gstBase + gst)}</div>
+<div class="total">${formatINR(gstBase+gst)} -</div>
 
 <br>
 
 <div class="row">
 <div>SFT = ${sft} × ${rate}</div>
-<div>= ${formatINR(material)}</div>
+<div class="value">= ${formatINR(material)} -</div>
 </div>
 
 <div class="row">
 <div>GST 18%</div>
-<div>= ${formatINR(gst)}</div>
+<div class="value">= ${formatINR(gst)} -</div>
 </div>
 
 <div class="row">
 <div>M × ${miningQty} × 7</div>
-<div>= ${formatINR(mining)}</div>
+<div class="value">= ${formatINR(mining)} -</div>
 </div>
 
 <div class="row">
 <div>Loading</div>
-<div>= ${formatINR(loading)}</div>
+<div class="value">= ${formatINR(loading)} -</div>
 </div>
 
 <div class="line"></div>
 
-<div class="center">${formatINR(total)}</div>
+<div class="total">${formatINR(total)} -</div>
 
 <br>
 
-<div class="highlight center">RTGS - ${formatINR(rtgs)}</div>
+<div class="highlight">
+RTGS - ${formatINR(rtgs)}
+</div>
 
 <div class="line"></div>
 
+<div class="center-block">
 <div class="final">${formatINR(finalAmount)}</div>
+</div>
 
 `;
 
@@ -235,4 +261,4 @@ link.click();
 </script>
 
 </body>
-</html>
+  </html>
