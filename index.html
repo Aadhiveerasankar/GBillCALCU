@@ -11,17 +11,18 @@
 <style>
 
 body{
-background:#eaeaea;
-padding:20px;
+background:#f0f0f0;
 font-family:Arial;
+padding:20px;
 }
 
 .container{
 background:white;
 padding:20px;
-max-width:520px;
+max-width:550px;
 margin:auto;
 border-radius:8px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
 }
 
 input{
@@ -47,37 +48,42 @@ margin-top:30px;
 background:white;
 padding:40px;
 font-family:'Patrick Hand', cursive;
-font-size:28px;
+font-size:30px;
 line-height:1.8;
 }
 
-.top{
-position:relative;
+.header{
 text-align:center;
-font-size:34px;
+font-size:40px;
+position:relative;
 }
 
 .customer{
 position:absolute;
 right:0;
 top:0;
-font-size:28px;
+font-size:30px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+margin:8px 0;
 }
 
 .line{
 border-bottom:3px solid black;
-width:300px;
-margin:10px 0;
-}
-
-.total{
-font-size:36px;
-font-weight:bold;
+margin:15px 0;
 }
 
 .highlight{
 background:yellow;
-padding:4px;
+padding:5px;
+}
+
+.final{
+font-size:50px;
+font-weight:bold;
 }
 
 </style>
@@ -155,38 +161,68 @@ let finalAmount=balance+pending;
 
 document.getElementById("bill").innerHTML=`
 
-<div class="top">
+<div class="header">
 శ్రీరామ
 <div class="customer">${customer}</div>
 </div>
 
 <br>
 
-Bill
+<div class="row">
+<div>SFT</div>
+<div>${sft} × ${rate}</div>
+<div>${formatINR(material)}</div>
+</div>
 
-SFT = ${sft} × ${rate} = ${formatINR(material)}
+<div class="row">
+<div>GST 18%</div>
+<div></div>
+<div>${formatINR(Math.round(gst))}</div>
+</div>
 
-GST 18% = ${formatINR(Math.round(gst))}
+<div class="row">
+<div>M</div>
+<div>${miningQty} × 7</div>
+<div>${formatINR(mining)}</div>
+</div>
 
-M × ${miningQty} × 7 = ${formatINR(mining)}
-
-Loading = ${formatINR(loading)}
+<div class="row">
+<div>Loading</div>
+<div></div>
+<div>${formatINR(loading)}</div>
+</div>
 
 <div class="line"></div>
 
-Total = ${formatINR(Math.round(total))}
+<div class="row">
+<div>Total</div>
+<div></div>
+<div>${formatINR(Math.round(total))}</div>
+</div>
 
-<div class="highlight">RTGS = - ${formatINR(rtgs)}</div>
+<div class="row highlight">
+<div>RTGS</div>
+<div></div>
+<div>- ${formatINR(rtgs)}</div>
+</div>
 
 <div class="line"></div>
 
-Balance = ${formatINR(Math.round(balance))}
+<div class="row">
+<div>Balance</div>
+<div></div>
+<div>${formatINR(Math.round(balance))}</div>
+</div>
 
-Previous Pending = ${formatINR(pending)}
+<div class="row">
+<div>Previous Pending</div>
+<div></div>
+<div>${formatINR(pending)}</div>
+</div>
 
 <div class="line"></div>
 
-<div class="total">${formatINR(Math.round(finalAmount))}</div>
+<div class="final">${formatINR(Math.round(finalAmount))}</div>
 
 `;
 
@@ -206,4 +242,4 @@ link.click();
 </script>
 
 </body>
-  </html>
+</html>
