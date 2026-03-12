@@ -11,24 +11,23 @@
 <style>
 
 body{
-background:#f0f0f0;
-font-family:Arial;
+background:#efefef;
 padding:20px;
+font-family:Arial;
 }
 
 .container{
 background:white;
 padding:20px;
-max-width:550px;
+max-width:600px;
 margin:auto;
-border-radius:8px;
-box-shadow:0 0 10px rgba(0,0,0,0.2);
+border-radius:6px;
 }
 
 input{
 width:100%;
 padding:10px;
-margin:8px 0;
+margin:6px 0;
 font-size:16px;
 }
 
@@ -36,15 +35,15 @@ button{
 width:100%;
 padding:12px;
 margin-top:10px;
-background:#2d7be5;
-color:white;
-border:none;
 font-size:18px;
+background:#2d7be5;
+border:none;
+color:white;
 cursor:pointer;
 }
 
 .bill{
-margin-top:30px;
+margin-top:25px;
 background:white;
 padding:40px;
 font-family:'Patrick Hand', cursive;
@@ -53,37 +52,39 @@ line-height:1.8;
 }
 
 .header{
-text-align:center;
-font-size:40px;
-position:relative;
+display:flex;
+justify-content:space-between;
+font-size:38px;
 }
 
-.customer{
-position:absolute;
-right:0;
-top:0;
-font-size:30px;
+.title{
+text-decoration:underline;
+}
+
+.center{
+text-align:center;
 }
 
 .row{
 display:flex;
 justify-content:space-between;
-margin:8px 0;
+margin:6px 0;
 }
 
 .line{
 border-bottom:3px solid black;
-margin:15px 0;
+margin:14px 0;
 }
 
 .highlight{
 background:yellow;
-padding:5px;
+padding:5px 8px;
 }
 
 .final{
-font-size:50px;
+font-size:44px;
 font-weight:bold;
+text-align:center;
 }
 
 </style>
@@ -139,7 +140,6 @@ let customer=document.getElementById("customer").value;
 
 let sft=Number(document.getElementById("sft").value);
 let rate=Number(document.getElementById("rate").value);
-
 let gstBase=Number(document.getElementById("gstBase").value);
 
 let miningQty=Number(document.getElementById("mining").value);
@@ -148,81 +148,69 @@ let rtgs=Number(document.getElementById("rtgs").value);
 let pending=Number(document.getElementById("pending").value);
 
 let material=sft*rate;
-
 let gst=gstBase*0.18;
-
 let mining=miningQty*7;
 
 let total=material+gst+mining+loading;
-
 let balance=total-rtgs;
-
 let finalAmount=balance+pending;
 
-document.getElementById("bill").innerHTML=`
+document.getElementById("bill").innerHTML = `
 
 <div class="header">
-శ్రీరామ
-<div class="customer">${customer}</div>
+<div class="title">Bill</div>
+<div class="title">శ్రీరామ</div>
 </div>
 
 <br>
 
 <div class="row">
-<div>SFT</div>
 <div>${sft} × ${rate}</div>
-<div>${formatINR(material)}</div>
+<div>= ${formatINR(material)}</div>
+</div>
+
+<div class="row">
+<div>18%</div>
+<div>= ${formatINR(Math.round(gst))}</div>
+</div>
+
+<div class="line"></div>
+
+<div class="center">${formatINR(Math.round(gstBase + gst))}</div>
+
+<br>
+
+<div class="row">
+<div>SFT = ${sft} × ${rate}</div>
+<div>= ${formatINR(material)}</div>
 </div>
 
 <div class="row">
 <div>GST 18%</div>
-<div></div>
-<div>${formatINR(Math.round(gst))}</div>
+<div>= ${formatINR(Math.round(gst))}</div>
 </div>
 
 <div class="row">
-<div>M</div>
-<div>${miningQty} × 7</div>
-<div>${formatINR(mining)}</div>
+<div>M × ${miningQty} × 7</div>
+<div>= ${formatINR(mining)}</div>
 </div>
 
 <div class="row">
 <div>Loading</div>
-<div></div>
-<div>${formatINR(loading)}</div>
+<div>= ${formatINR(loading)}</div>
 </div>
 
 <div class="line"></div>
 
-<div class="row">
-<div>Total</div>
-<div></div>
-<div>${formatINR(Math.round(total))}</div>
-</div>
+<div class="center">${formatINR(Math.round(total))}</div>
 
-<div class="row highlight">
-<div>RTGS</div>
-<div></div>
-<div>- ${formatINR(rtgs)}</div>
-</div>
+<br>
+
+<div class="highlight center">RTGS  - ${formatINR(rtgs)}</div>
 
 <div class="line"></div>
 
-<div class="row">
-<div>Balance</div>
-<div></div>
-<div>${formatINR(Math.round(balance))}</div>
-</div>
-
-<div class="row">
-<div>Previous Pending</div>
-<div></div>
-<div>${formatINR(pending)}</div>
-</div>
-
-<div class="line"></div>
-
-<div class="final">${formatINR(Math.round(finalAmount))}</div>
+<div class="final">${formatINR(Math.round(balance + pending))}</div>
 
 `;
 
@@ -242,4 +230,4 @@ link.click();
 </script>
 
 </body>
-</html>
+             </html>
