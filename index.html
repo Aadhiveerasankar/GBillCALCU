@@ -13,12 +13,13 @@
 body{
 background:#eaeaea;
 padding:20px;
+font-family:Arial;
 }
 
 .container{
 background:white;
 padding:20px;
-max-width:500px;
+max-width:520px;
 margin:auto;
 border-radius:8px;
 }
@@ -38,6 +39,7 @@ background:#2d7be5;
 color:white;
 border:none;
 font-size:18px;
+cursor:pointer;
 }
 
 .bill{
@@ -50,9 +52,16 @@ line-height:1.8;
 }
 
 .top{
-display:flex;
-justify-content:space-between;
-font-size:32px;
+position:relative;
+text-align:center;
+font-size:34px;
+}
+
+.customer{
+position:absolute;
+right:0;
+top:0;
+font-size:28px;
 }
 
 .line{
@@ -81,11 +90,17 @@ padding:4px;
 
 <h2>Granite Bill Calculator</h2>
 
+<label>Customer Name</label>
+<input id="customer">
+
 <label>SFT</label>
 <input id="sft" type="number">
 
 <label>Rate</label>
 <input id="rate" type="number">
+
+<label>GST Value</label>
+<input id="gstBase" type="number">
 
 <label>Mining Quantity</label>
 <input id="mining" type="number">
@@ -96,6 +111,9 @@ padding:4px;
 <label>RTGS</label>
 <input id="rtgs" type="number">
 
+<label>Previous Pending</label>
+<input id="pending" type="number">
+
 <button onclick="calculate()">Calculate</button>
 <button onclick="downloadBill()">Download Bill Image</button>
 
@@ -105,50 +123,70 @@ padding:4px;
 
 <script>
 
+function formatINR(num){
+return num.toLocaleString('en-IN');
+}
+
 function calculate(){
 
-let sft = Number(document.getElementById("sft").value);
-let rate = Number(document.getElementById("rate").value);
-let miningQty = Number(document.getElementById("mining").value);
-let loading = Number(document.getElementById("loading").value);
-let rtgs = Number(document.getElementById("rtgs").value);
+let customer=document.getElementById("customer").value;
 
-let material = sft * rate;
+let sft=Number(document.getElementById("sft").value);
+let rate=Number(document.getElementById("rate").value);
 
-let gst = material * 0.18;
+let gstBase=Number(document.getElementById("gstBase").value);
 
-let mining = miningQty * 7;
+let miningQty=Number(document.getElementById("mining").value);
+let loading=Number(document.getElementById("loading").value);
+let rtgs=Number(document.getElementById("rtgs").value);
+let pending=Number(document.getElementById("pending").value);
 
-let total = material + gst + mining + loading;
+let material=sft*rate;
 
-let axis = total - rtgs;
+let gst=gstBase*0.18;
 
-document.getElementById("bill").innerHTML = `
+let mining=miningQty*7;
+
+let total=material+gst+mining+loading;
+
+let balance=total-rtgs;
+
+let finalAmount=balance+pending;
+
+document.getElementById("bill").innerHTML=`
 
 <div class="top">
-<div>Bill</div>
-<div>శ్రీరామ</div>
+శ్రీరామ
+<div class="customer">${customer}</div>
 </div>
 
-<div>${sft} × ${rate} = ${material.toLocaleString()}</div>
-<div>18% = ${gst.toLocaleString()}</div>
+<br>
+
+Bill
+
+SFT = ${sft} × ${rate} = ${formatINR(material)}
+
+GST 18% = ${formatINR(Math.round(gst))}
+
+M × ${miningQty} × 7 = ${formatINR(mining)}
+
+Loading = ${formatINR(loading)}
 
 <div class="line"></div>
 
-<div>SFT = ${sft} × ${rate} = ${material.toLocaleString()}</div>
-<div>GST 18% = ${gst.toLocaleString()}</div>
-<div>M × ${miningQty} × 7 = ${mining.toLocaleString()}</div>
-<div>Loading = ${loading.toLocaleString()}</div>
+Total = ${formatINR(Math.round(total))}
+
+<div class="highlight">RTGS = - ${formatINR(rtgs)}</div>
 
 <div class="line"></div>
 
-<div>Total = ${total.toLocaleString()}</div>
+Balance = ${formatINR(Math.round(balance))}
 
-<div class="highlight">RTGS = - ${rtgs.toLocaleString()}</div>
+Previous Pending = ${formatINR(pending)}
 
 <div class="line"></div>
 
-<div class="total">${axis.toLocaleString()}</div>
+<div class="total">${formatINR(Math.round(finalAmount))}</div>
 
 `;
 
@@ -156,13 +194,11 @@ document.getElementById("bill").innerHTML = `
 
 function downloadBill(){
 
-html2canvas(document.getElementById("bill")).then(canvas => {
-
-let link = document.createElement("a");
-link.download = "granite_bill.png";
-link.href = canvas.toDataURL();
+html2canvas(document.getElementById("bill")).then(canvas=>{
+let link=document.createElement("a");
+link.download="granite_bill.png";
+link.href=canvas.toDataURL();
 link.click();
-
 });
 
 }
@@ -170,4 +206,4 @@ link.click();
 </script>
 
 </body>
-</html>
+  </html>
