@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Granite Bill Calculator</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -20,6 +22,7 @@ font-family:Arial;
 background:white;
 padding:20px;
 max-width:650px;
+width:95%;
 margin:auto;
 border-radius:6px;
 }
@@ -175,7 +178,9 @@ let mining=miningQty*7;
 
 let total=material+gst+mining+loading;
 let balance=total-rtgs;
-let finalAmount=balance+pending;
+
+/* rounding fix */
+let finalAmount=Math.round(balance+pending);
 
 document.getElementById("bill").innerHTML = `
 
@@ -261,4 +266,4 @@ link.click();
 </script>
 
 </body>
-  </html>
+</html>
