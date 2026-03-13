@@ -47,11 +47,11 @@ cursor:pointer;
 
 .bill{
 margin-top:20px;
-background:white;
-padding:20px;
+background:#ffffff;
+padding:25px;
 font-family:'Kalam', cursive;
-font-size:26px;
-line-height:1.4;
+font-size:28px;
+line-height:1.5;
 position:relative;
 }
 
@@ -67,7 +67,7 @@ left:0;
 
 .bill-center{
 text-align:center;
-font-size:30px;
+font-size:32px;
 }
 
 .bill-right{
@@ -252,12 +252,15 @@ RTGS - ${formatINR(rtgs)}
 
 function downloadBill(){
 
+let customer=document.getElementById("customer").value || "granite_bill";
+
 html2canvas(document.getElementById("bill"),{
-scale:3
+scale:4,
+backgroundColor:"#ffffff"
 }).then(canvas=>{
 let link=document.createElement("a");
-link.download="granite_bill.png";
-link.href=canvas.toDataURL();
+link.download=customer+"_bill.png";
+link.href=canvas.toDataURL("image/png");
 link.click();
 });
 
