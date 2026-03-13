@@ -79,11 +79,12 @@ right:0;
 display:flex;
 justify-content:space-between;
 margin:6px 0;
+flex-wrap:nowrap;
 }
 
 .value{
 text-align:right;
-min-width:180px;
+min-width:220px;
 }
 
 .line{
@@ -206,7 +207,7 @@ document.getElementById("bill").innerHTML = `
 
 <div class="line"></div>
 
-<div class="total">${formatINR(gstBase+gst)} -</div>
+<div class="total">${formatINR(gstBase + gst)} -</div>
 
 <br>
 
